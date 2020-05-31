@@ -1,0 +1,18 @@
+header {
+    background-color: grey;
+    height: 100px;
+}
+
+header img {
+    width: 100px;
+    float: left;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+body section img {
+    display: inline-block;
+    width: 300px;
+}
