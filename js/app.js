@@ -40,8 +40,16 @@ for (var i = 0; i < imgArr.length; i++) {
 
 var firstObj, secondObj, thairdObj;
 
+function renderImg(){
+
+  do{
 var a1 = randomNumber(0, item.all.length - 1);
-  firstObj = item.all[a1];
+var a2 = randomNumber(0, item.all.length - 1); 
+var a3 = randomNumber(0, item.all.length - 1);
+  }while(a1 == a2 || a1 == a3 || a3 == a2 );
+
+
+firstObj = item.all[a1];
   firstImg.alt = firstObj.itemName;
   firstImg.title = firstObj.itemName;
   firstObj.views++;
@@ -53,7 +61,7 @@ var a1 = randomNumber(0, item.all.length - 1);
     firstImg.src = firstObj.imagePath3;
   }
 
-  var a2 = randomNumber(0, item.all.length - 1);
+  
   secondObj = item.all[a2];
   secondImg.alt = secondObj.itemName;
   secondImg.title = secondObj.itemName;
@@ -67,7 +75,7 @@ var a1 = randomNumber(0, item.all.length - 1);
     secondImg.src = secondObj.imagePath3;
   }
 
-  var a3 = randomNumber(0, item.all.length - 1);
+  
   thairdObj = item.all[a3];
   thairdImg.alt = thairdObj.itemName;
   thairdImg.title = thairdObj.itemName;
@@ -80,7 +88,8 @@ var a1 = randomNumber(0, item.all.length - 1);
   } else if (a3 == 19) {
     thairdImg.src = thairdObj.imagePath3;
   }
-
+}
+renderImg();
 
 // function photosfill(numImg, numObj) {
 
@@ -126,7 +135,7 @@ section.addEventListener('click', handleClick);
 function handleClick(event) {
  // console.log(event.target)
 
-  if (totalClicks < 5) {
+  if (totalClicks < 10) {
     if (event.target.id === 'first' || event.target.id === 'second' || event.target.id === 'thaird') {
       totalClicks++;
       if(event.target.id === 'first') {
@@ -140,52 +149,14 @@ function handleClick(event) {
       }
      
       
-      var a1 = randomNumber(0, item.all.length - 1);
-      firstObj = item.all[a1];
-      firstImg.alt = firstObj.itemName;
-      firstImg.title = firstObj.itemName;
-      firstObj.views++;
-      if (a1 < 18) {
-        firstImg.src = firstObj.imagePath1;
-      } else if (a1 == 18) {
-        firstImg.src = firstObj.imagePath2;
-      } else if (a1 == 19) {
-        firstImg.src = firstObj.imagePath3;
-      }
-    
-      var a2 = randomNumber(0, item.all.length - 1);
-      secondObj = item.all[a2];
-      secondImg.alt = secondObj.itemName;
-      secondImg.title = secondObj.itemName;
-  secondObj.views++;
-
-      if (a2 < 18) {
-        secondImg.src = secondObj.imagePath1;
-      } else if (a2 == 18) {
-        secondImg.src = secondObj.imagePath2;
-      } else if (a2 == 19) {
-        secondImg.src = secondObj.imagePath3;
-      }
-    
-      var a3 = randomNumber(0, item.all.length - 1);
-      thairdObj = item.all[a3];
-      thairdImg.alt = thairdObj.itemName;
-      thairdImg.title = thairdObj.itemName;
-  thairdObj.views++;
-
-      if (a3 < 18) {
-        thairdImg.src = thairdObj.imagePath1;
-      } else if (a3 == 18) {
-        thairdImg.src = thairdObj.imagePath2;
-      } else if (a3 == 19) {
-        thairdImg.src = thairdObj.imagePath3;
-      }
+      renderImg();
     
       
       
       
     }
-  }else{
+  }else if (totalClicks === 10){
+    totalClicks++;
     renderResults();
   }
 }
