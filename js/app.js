@@ -1,7 +1,8 @@
 'use strict'
 
 var imgArr = ["bag", "banana", "bathroom", "boots", "breakfast", "bubblegum", "chair", "cthulhu", "dog-duck", "dragon", "pen", "pet-sweep", "scissors", "shark", "tauntaun", "unicorn", "water-can", "wine-glass", "usb", "sweep"];
-
+var clicksArr = [];
+var viewsArr = [];
 // ---------------------------------------------------------------------------------------
 
 function randomNumber(min, max) {
@@ -18,40 +19,57 @@ var thairdImg = document.getElementById("thaird");
 var section = document.getElementById("threeimg");
 
 // -------------------------------------------------------------------------------------------------------------
-function item(name) {
-  this.itemName = name;
+function Item(name) {
+  this.ItemName = name;
   this.imagePath1 = `img/${name}.jpg`;
   this.imagePath2 = `img/${name}.gif`;
   this.imagePath3 = `img/${name}.png`;
   this.clicks = 0;
   this.views = 0;
 
-  item.all.push(this);
+  Item.all.push(this);
 }
-item.all = [];
+Item.all = [];
+ console.log(Item.all);
 
 // ---------------------------------------------------------------------------------------------------
 
 for (var i = 0; i < imgArr.length; i++) {
-  new item(imgArr[i]);
+  new Item(imgArr[i]);
 }
-//console.log(item.all);
+//console.log(Item.all);
 // ------------------------------------------------------------------------------------------------
-
+var noRepArr = [];
 var firstObj, secondObj, thairdObj;
-
+var a1,a2,a3;
 function renderImg(){
 
+  // do{
   do{
-var a1 = randomNumber(0, item.all.length - 1);
-var a2 = randomNumber(0, item.all.length - 1); 
-var a3 = randomNumber(0, item.all.length - 1);
+a1 = randomNumber(0, Item.all.length - 1);
+a2 = randomNumber(0, Item.all.length - 1); 
+a3 = randomNumber(0, Item.all.length - 1);
   }while(a1 == a2 || a1 == a3 || a3 == a2 );
+  
+  // if (noRepArr.length == 18) {
+  //   break;
+  // }
+  
+  // x = [a1, a2, a3];
+  // for(var j = 0; j < x.length; j++){
+  //   while(noRepArr.includes(x[j])){
+  //     x[j] = randomNumber(0, Item.all.length - 1);
+  //   }
+  // }
+ 
+  // }while (noRepArr.includes(a1) || noRepArr.includes(a2) || noRepArr.includes(a3));
+  
+  noRepArr.push(a1 , a2 , a3);
 
 
-firstObj = item.all[a1];
-  firstImg.alt = firstObj.itemName;
-  firstImg.title = firstObj.itemName;
+firstObj = Item.all[a1];
+  firstImg.alt = firstObj.ItemName;
+  firstImg.title = firstObj.ItemName;
   firstObj.views++;
   if (a1 < 18) {
     firstImg.src = firstObj.imagePath1;
@@ -62,9 +80,9 @@ firstObj = item.all[a1];
   }
 
   
-  secondObj = item.all[a2];
-  secondImg.alt = secondObj.itemName;
-  secondImg.title = secondObj.itemName;
+  secondObj = Item.all[a2];
+  secondImg.alt = secondObj.ItemName;
+  secondImg.title = secondObj.ItemName;
   secondObj.views++;
 
   if (a2 < 18) {
@@ -76,9 +94,9 @@ firstObj = item.all[a1];
   }
 
   
-  thairdObj = item.all[a3];
-  thairdImg.alt = thairdObj.itemName;
-  thairdImg.title = thairdObj.itemName;
+  thairdObj = Item.all[a3];
+  thairdImg.alt = thairdObj.ItemName;
+  thairdImg.title = thairdObj.ItemName;
   thairdObj.views++;
 
   if (a3 < 18) {
@@ -93,10 +111,10 @@ renderImg();
 
 // function photosfill(numImg, numObj) {
 
-//   var a1 = randomNumber(0, item.all.length - 1);
-//   numObj = item.all[a1];
-//   numImg.alt = numObj.itemName;
-//   numImg.title = numObj.itemName;
+//   var a1 = randomNumber(0, Item.all.length - 1);
+//   numObj = Item.all[a1];
+//   numImg.alt = numObj.ItemName;
+//   numImg.title = numObj.ItemName;
 //   if (a1 < 18) {
 //     numImg.src = numObj.imagePath1;
 //   } else if (a1 == 18) {
@@ -109,18 +127,18 @@ renderImg();
 //photosfill(secondImg, secondObj);
 //photosfill(thairdImg, thairdObj);
 
-console.log(firstObj);
-console.log(secondObj);
-console.log(thairdObj);
+// console.log(firstObj);
+// console.log(secondObj);
+// console.log(thairdObj);
 
 
 // --------------------------------------------------------------------------------------------------
 
 function renderResults () {
   var ulList = document.getElementById('result');
-  for( var i =0; i<item.all.length; i++) {
+  for( var i =0; i<Item.all.length; i++) {
     var li = document.createElement('li');
-    li.textContent = `${item.all[i].itemName} had ${item.all[i].clicks} votes and was shown ${item.all[i].views} times`;
+    li.textContent = `${Item.all[i].ItemName} had ${Item.all[i].clicks} votes and was shown ${Item.all[i].views} times`;
     ulList.append(li);
   }
 }
@@ -135,7 +153,7 @@ section.addEventListener('click', handleClick);
 function handleClick(event) {
  // console.log(event.target)
 
-  if (totalClicks < 10) {
+  if (totalClicks < 6) {
     if (event.target.id === 'first' || event.target.id === 'second' || event.target.id === 'thaird') {
       totalClicks++;
       if(event.target.id === 'first') {
@@ -147,24 +165,84 @@ function handleClick(event) {
       if(event.target.id === 'thaird') {
         thairdObj.clicks++;
       }
+      renderImg();
+    }
+  }else if (totalClicks === 6){
+    totalClicks++;
+    renderResults();
+    for (var x = 0 ; x<Item.all.length ; x++){
+      clicksArr.push(Item.all[x].clicks);
+      viewsArr.push(Item.all[x].views)
+    } 
+    console.log(clicksArr);
+console.log(viewsArr);
+chartFillCilcks();
+
+  }
+}
      
       
-      renderImg();
+// -------------------------------------------------------------------------------------------------------------------
+
+
+function chartFillCilcks(){
+  var canvas = document.getElementById('myChart');
+  new Chart(canvas, {
+    type: 'horizontalBar',
+    data: {
+      labels: imgArr,
+      datasets: [{
+        label: 'Clicks',
+        yAxisID: 'A',
+        data: clicksArr,
+        backgroundColor: 'blue'
+      }, {
+        label: 'Views',
+        yAxisID: 'A',
+        data: viewsArr,
+        backgroundColor: 'red'
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          id: 'A',
+          position: 'left'
+        }]
+      }
+    }
+  });
+}
+
     
       
       
       
-    }
-  }else if (totalClicks === 10){
-    totalClicks++;
-    renderResults();
-  }
-}
-// -------------------------------------------------------------------------------------------
+
+
+
+console.log(noRepArr);
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 
