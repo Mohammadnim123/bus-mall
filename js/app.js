@@ -39,32 +39,21 @@ for (var i = 0; i < imgArr.length; i++) {
 }
 //console.log(Item.all);
 // ------------------------------------------------------------------------------------------------
-var noRepArr = [];
+
 var firstObj, secondObj, thairdObj;
 var a1,a2,a3;
 function renderImg(){
 
-  // do{
+ 
   do{
 a1 = randomNumber(0, Item.all.length - 1);
 a2 = randomNumber(0, Item.all.length - 1); 
 a3 = randomNumber(0, Item.all.length - 1);
   }while(a1 == a2 || a1 == a3 || a3 == a2 );
   
-  // if (noRepArr.length == 18) {
-  //   break;
-  // }
   
-  // x = [a1, a2, a3];
-  // for(var j = 0; j < x.length; j++){
-  //   while(noRepArr.includes(x[j])){
-  //     x[j] = randomNumber(0, Item.all.length - 1);
-  //   }
-  // }
- 
-  // }while (noRepArr.includes(a1) || noRepArr.includes(a2) || noRepArr.includes(a3));
   
-  noRepArr.push(a1 , a2 , a3);
+  
 
 
 firstObj = Item.all[a1];
@@ -152,6 +141,7 @@ section.addEventListener('click', handleClick);
 
 function handleClick(event) {
  // console.log(event.target)
+ localStorage.clear();
 
   if (totalClicks < 6) {
     if (event.target.id === 'first' || event.target.id === 'second' || event.target.id === 'thaird') {
@@ -170,6 +160,8 @@ function handleClick(event) {
   }else if (totalClicks === 6){
     totalClicks++;
     renderResults();
+    location.reload();
+
     for (var x = 0 ; x<Item.all.length ; x++){
       clicksArr.push(Item.all[x].clicks);
       viewsArr.push(Item.all[x].views)
@@ -177,6 +169,7 @@ function handleClick(event) {
     console.log(clicksArr);
 console.log(viewsArr);
 chartFillCilcks();
+storeAtLocal()
 
   }
 }
@@ -214,14 +207,43 @@ function chartFillCilcks(){
   });
 }
 
-    
-      
-      
+  // -------------------------------------------------------------------------------------------  
+
+  function storeAtLocal() {
+
+    var picArray = JSON.stringify(Item.all);
+    var saveClicksArr = JSON.stringify(clicksArr);
+    var saveViewsArr = JSON.stringify(viewsArr);
+    localStorage.setItem('picArray',picArray);
+    localStorage.setItem('saveClicksArr',saveClicksArr);
+    localStorage.setItem('saveViewsArr',saveViewsArr);
+  }
+  
+// ------------------------------------------------------------------------------------------
+
+function getValuesFromLocal() {
+  // viewsArr = [];
+  // clicksArr = [];
+  // Item.all = [];
+  var picArray = localStorage.getItem('picArray');
+  var saveClicksArr = localStorage.getItem('saveClicksArr');
+  var saveViewsArr = localStorage.getItem('saveViewsArr');
+  
+  if(picArray) {
+    Item.all = JSON.parse(picArray);
+    clicksArr = JSON.parse(saveClicksArr);
+    viewsArr = JSON.parse(saveViewsArr);
+    chartFillCilcks();
+    renderResults ();
+  }
+}
+
+getValuesFromLocal()    
       
 
 
 
-console.log(noRepArr);
+
 
 
 
