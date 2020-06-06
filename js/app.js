@@ -1,9 +1,8 @@
 'use strict'
 
 var imgArr = ["bag", "banana", "bathroom", "boots", "breakfast", "bubblegum", "chair", "cthulhu", "dog-duck", "dragon", "pen", "pet-sweep", "scissors", "shark", "tauntaun", "unicorn", "water-can", "wine-glass", "usb", "sweep"];
-var clicksArr = [];
-var viewsArr = [];
-// ---------------------------------------------------------------------------------------
+
+// ----------------random number-----------------------------------------------------------------------
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -11,14 +10,15 @@ function randomNumber(min, max) {
 
 
 
-// --------------------------------------------------------------------------------------------------------
+// ------------------Get ids for some tags--------------------------------------------------------------------------------------
 
 var firstImg = document.getElementById("first");
 var secondImg = document.getElementById("second");
 var thairdImg = document.getElementById("thaird");
 var section = document.getElementById("threeimg");
 
-// -------------------------------------------------------------------------------------------------------------
+// ---------------------Constructor----------------------------------------------------------------------------------------
+Item.all = [];
 function Item(name) {
   this.ItemName = name;
   this.imagePath1 = `img/${name}.jpg`;
@@ -29,29 +29,51 @@ function Item(name) {
 
   Item.all.push(this);
 }
-Item.all = [];
+
  console.log(Item.all);
 
-// ---------------------------------------------------------------------------------------------------
+// --------------------Make the objects-------------------------------------------------------------------------------
 
 for (var i = 0; i < imgArr.length; i++) {
   new Item(imgArr[i]);
 }
 //console.log(Item.all);
-// ------------------------------------------------------------------------------------------------
-
+// -----------------------view three img-------------------------------------------------------------------------
+var noRepArr = [];
 var firstObj, secondObj, thairdObj;
 var a1,a2,a3;
 function renderImg(){
+if(noRepArr.length==0){
+  do{
+    a1 = randomNumber(0, Item.all.length - 1);
+    a2 = randomNumber(0, Item.all.length - 1); 
+    a3 = randomNumber(0, Item.all.length - 1);
+  }while(a1 == a2 || a1 == a3 || a3 == a2 )
+}
+  
+  function generatTreeNum(){
+    while (noRepArr.includes(a1) || noRepArr.includes(a2) || noRepArr.includes(a3)){
+      do{
+        a1 = randomNumber(0, Item.all.length - 1);
+        a2 = randomNumber(0, Item.all.length - 1); 
+        a3 = randomNumber(0, Item.all.length - 1);
+      }while(a1 == a2 || a1 == a3 || a3 == a2 )
+    }
+   
+}
+if(noRepArr.length>=3){
+generatTreeNum()
+}
 
  
-  do{
-a1 = randomNumber(0, Item.all.length - 1);
-a2 = randomNumber(0, Item.all.length - 1); 
-a3 = randomNumber(0, Item.all.length - 1);
-  }while(a1 == a2 || a1 == a3 || a3 == a2 );
-  
-  
+ 
+ 
+ 
+ noRepArr
+  noRepArr = [];
+  noRepArr.push(a1 , a2 , a3);
+  console.log(noRepArr);
+
   
   
 
@@ -98,30 +120,10 @@ firstObj = Item.all[a1];
 }
 renderImg();
 
-// function photosfill(numImg, numObj) {
-
-//   var a1 = randomNumber(0, Item.all.length - 1);
-//   numObj = Item.all[a1];
-//   numImg.alt = numObj.ItemName;
-//   numImg.title = numObj.ItemName;
-//   if (a1 < 18) {
-//     numImg.src = numObj.imagePath1;
-//   } else if (a1 == 18) {
-//     numImg.src = numObj.imagePath2;
-//   } else if (a1 == 19) {
-//     numImg.src = numObj.imagePath3;
-//   }
-// }
-//photosfill(firstImg, firstObj);
-//photosfill(secondImg, secondObj);
-//photosfill(thairdImg, thairdObj);
-
-// console.log(firstObj);
-// console.log(secondObj);
-// console.log(thairdObj);
 
 
-// --------------------------------------------------------------------------------------------------
+
+// --------------------------view the results------------------------------------------------------------------------
 
 function renderResults () {
   var ulList = document.getElementById('result');
@@ -131,17 +133,17 @@ function renderResults () {
     ulList.append(li);
   }
 }
-//Banana Slicer had 3 votes and was shown 5 times
 
 
-// -----------------------------------------------------------------------------------------------------
+
+// ----------------event lestener to change the photos and store in local storage-------------------------------------------------------------------------------------
 var totalClicks = 0;
 
 section.addEventListener('click', handleClick);
 
 function handleClick(event) {
- // console.log(event.target)
- localStorage.clear();
+ 
+
 
   if (totalClicks < 6) {
     if (event.target.id === 'first' || event.target.id === 'second' || event.target.id === 'thaird') {
@@ -156,29 +158,42 @@ function handleClick(event) {
         thairdObj.clicks++;
       }
       renderImg();
+      
     }
   }else if (totalClicks === 6){
     totalClicks++;
+    document.getElementById('result').innerHTML = ""
     renderResults();
-    location.reload();
+    
 
-    for (var x = 0 ; x<Item.all.length ; x++){
-      clicksArr.push(Item.all[x].clicks);
-      viewsArr.push(Item.all[x].views)
-    } 
-    console.log(clicksArr);
-console.log(viewsArr);
+   
 chartFillCilcks();
+
+
 storeAtLocal()
+
 
   }
 }
      
       
-// -------------------------------------------------------------------------------------------------------------------
+// -------------------------print the chart------------------------------------------------------------------------------------------
 
 
 function chartFillCilcks(){
+  var clicksArr = [];
+var viewsArr = [];
+
+  for (var x = 0 ; x<Item.all.length ; x++){
+    clicksArr.push(Item.all[x].clicks);
+    viewsArr.push(Item.all[x].views)
+  } 
+  console.log(clicksArr);
+console.log(viewsArr);
+
+
+
+
   var canvas = document.getElementById('myChart');
   new Chart(canvas, {
     type: 'horizontalBar',
@@ -207,32 +222,26 @@ function chartFillCilcks(){
   });
 }
 
-  // -------------------------------------------------------------------------------------------  
+  // ----------------save to local storage---------------------------------------------------------------------------  
 
   function storeAtLocal() {
+    // localStorage.clear();
 
     var picArray = JSON.stringify(Item.all);
-    var saveClicksArr = JSON.stringify(clicksArr);
-    var saveViewsArr = JSON.stringify(viewsArr);
+    
     localStorage.setItem('picArray',picArray);
-    localStorage.setItem('saveClicksArr',saveClicksArr);
-    localStorage.setItem('saveViewsArr',saveViewsArr);
+    
   }
   
-// ------------------------------------------------------------------------------------------
+// ---------------git value from local storage---------------------------------------------------------------------------
 
 function getValuesFromLocal() {
-  // viewsArr = [];
-  // clicksArr = [];
-  // Item.all = [];
+  
   var picArray = localStorage.getItem('picArray');
-  var saveClicksArr = localStorage.getItem('saveClicksArr');
-  var saveViewsArr = localStorage.getItem('saveViewsArr');
   
   if(picArray) {
     Item.all = JSON.parse(picArray);
-    clicksArr = JSON.parse(saveClicksArr);
-    viewsArr = JSON.parse(saveViewsArr);
+    
     chartFillCilcks();
     renderResults ();
   }
@@ -240,8 +249,6 @@ function getValuesFromLocal() {
 
 getValuesFromLocal()    
       
-
-
 
 
 

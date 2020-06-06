@@ -1,6 +1,15 @@
+
+body{
+    background-color: #389ae1;
+}
+
+
 header {
-    background-color: grey;
+    background-image: url(above-clouds.jpg);
+    background-repeat: no-repeat;
+   background-size: cover;
     height: 100px;
+    
 }
 
 header img {
@@ -10,9 +19,92 @@ header img {
 
 h1 {
     font-size: 50px;
+    color: red;
+    margin-left: 20px;
+    font-family: fantasy;
 }
 
 body section img {
     display: inline-block;
-    width: 300px;
+    width: 400px;
+    height: 400px;
+}
+
+#head {
+    height: 0px;
+    margin: 0 0 0 36%;
+    padding: 20px;
+}
+
+#resultContainer{
+    
+    height: 94%;
+    width: 20%;
+     margin: 1% 0 0 1%;
+
+}
+
+article{
+    margin : 5% 8% 0 5%;
+   
+}
+
+#first , #second {
+    padding-right: 35px;
+}
+
+#threeimg{
+    background-color: gray;
+    padding: 20px;
+
+}
+
+#parag {
+    margin-top: 30px;
+    font-size: 20px;
+font-family: Arial, Helvetica, sans-serif;
+font-weight: bolder;
+color: beige;
+background-color: gray;
+padding: 20px;
+}
+
+#parag p{
+    line-height: 32px;
+}
+
+#myChart{
+    margin-top: 30px;
+    
+}
+
+h2{
+    font-size: 40px;
+    font-family: monospace;
+    font-weight: bolder;
+    color: red; 
+}
+
+#picprag{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#resultContainer{
+    text-align: center;
+    margin: 5% 0 0 36%;
+    background-color: gray;
+    padding: 30px;
+    width: 400px;
+}
+
+#resultContainer ul {
+    margin-top: 20px;
+}
+
+#resultContainer ul li {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    
 }
